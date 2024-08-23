@@ -1,0 +1,100 @@
+/******************************************************************************
+
+                            Online C Compiler.
+                Code, Compile, Run and Debug C program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <stdio.h>
+#include <stdlib.h> //exit(0),system()
+#include <conio.h>  //getch()
+    char nome[20];
+    int depos, quant = 10000, NumConta, trans,cont; //globais
+    
+    void menu();
+    
+int main()
+{   int esc;
+    printf("Insira seu nome completo: ");
+    fgets(nome);
+    
+    printf("Insira o numero da conta");
+    scanf("%d", &NumConta);
+    
+    menu();
+    printf("Insira sua escolha : ");
+    scanf("%d", &esc);
+    
+    switch (case esc)
+    {
+    case 1:    
+        depositar();
+        break;
+    case 2:    
+        sacar();
+        break;
+     case 3:    
+        transferir();
+        break;
+     case 4:    
+        vizuConta();
+        break;
+     case 5:    
+        detalhesTrans();
+        break;
+     case 6:    
+        maisDetalhes();
+        exit(0);
+    }
+    
+    return 0;
+}
+ void menu()
+    {
+        printf("---MENU PRINCIPAL---\n");
+        printf("1.Depositar");
+        printf("2.Sacar");
+        printf("3.Transferir");
+        printf("4.Vizualizar Conta");
+        printf("5.Detalhes da Transação");
+        printf("6.Sair");
+    }
+    
+    void transferir()
+    {
+        int cont;
+        FILE *ptr=fopen("Account.txt","a");
+        printf("-TRANSFERIR DINHEIRO-\n");
+        printf("Insira valor a ser tranferido : ");
+        scanf("%d", &trans);
+         printf("Insira o numero da conta a ser transferido o valor : ");
+        scanf("%d", &cont);
+        
+        if(cont<trans)
+        {
+            printf("Saldo Insuficiente seu Liso\n");
+        }
+        else{
+            cont -= trans;
+            printf("Transferencia Completa!\n");
+            printf("Saldo atual: %d", cont);
+            fprintf(ptr, "O valor %d foi transferido de sua conta para %d \n", trans, cont);
+        }
+        fclose(ptr);
+        printf("Pressione qualquer tecla para continuar..........\n");
+        getch();
+    }
+    
+    void vizuConta()
+    {
+        printf("-Vizualizar Conta-");
+        for(int i =0; i<50; i++){
+            printf("-");
+        }
+        printf("\nNome: %s\n", nome);
+        printf("\nConta: %d\n", NumConta);
+         printf("\nSaldo Total: %d\n", cont);
+          printf("\nPressione qualquer tecla.....\n");
+          getch();
+    }
