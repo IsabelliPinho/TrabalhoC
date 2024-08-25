@@ -1,121 +1,207 @@
 #include <stdio.h>
-#include <stdlib.h> // exit(0)
-#include <time.h>   // time(), ctime()
+#include <stdlib.h>
+#include <string.h>
+#include <conio.h>
+#include <time.h>
 
+#define MAX_CONTAS 100
 
-char nome[20];
-int quant = 10000, NumConta, trans;
+int numeroConta[MAX_CONTAS];
+char titular[MAX_CONTAS][50];
+float saldo[MAX_CONTAS];
+int totalContas = 0;
 
+void criarConta(){
 
-void menu();
-void depositar();
-void sacar();
-void transferir();
-void vizuConta();
-void detalhesTrans();
-void maisDetalhes();
+    if(totalContas >= MAX_CONTAS){
+        printf("\nLimite de contas criadas alcançado!\n");
+        return;
+    } 
+    numeroConta[totalContas] = totalContas + 1;
 
-int main()
-{
-    int esc;
-    printf("Insira seu nome completo:\n ");
-    fgets(nome, sizeof(nome), stdin);
-    
-    printf("Insira o numero da conta:\n ");
-    scanf("%d", &NumConta);
-    
-    menu();
-    printf("Insira sua escolha: \n");
-    scanf("%d", &esc);
-    
-    switch (esc)
-    {
-        case 1:
-            depositar();
-            break;
-        case 2:
-            sacar();
-            break;
-        case 3:
-            transferir();
-            break;
-        case 4:
-            vizuConta();
-            break;
-        case 5:
-            detalhesTrans();
-            break;
-        case 6:
-            maisDetalhes();
-            exit(0);
-            break;
-        default:
-            printf("Escolha invalida.\n");
-            break;
-    }
-    
-    return 0;
-}
-
-void menu()
-{
-    printf("---MENU PRINCIPAL---\n");
-    printf("1. Depositar\n");
-    printf("2. Sacar\n");
-    printf("3. Transferir\n");
-    printf("4. Visualizar Conta\n");
-    printf("5. Detalhes da Transação\n");
-    printf("6. Sair\n");
-}
-
-void transferir()
-{
-    printf("- Transferir Valor -\n");
+    printf("\n- Criar Conta -\n");
     for(int i = 0; i < 50; i++){
         printf("-");
     }
-    printf("\nInsira o valor a ser transferido: ");
-    scanf("%d", &trans);
-    
-    if (quant < trans){
-        printf("** Saldo Insuficiente **\n");
+
+    printf("\nDigite o nome do titular da conta:\n");
+    scanf(" %[^\n]%*c", titular[totalContas]);
+
+    saldo[totalContas] = 0.0;
+    totalContas ++;
+
+    printf("\nConta criada com sucesso! O numero da sua conta é: %d e seu saldo atual é de: R$%.2f\n", numeroConta[totalContas - 1], saldo[totalContas - 1]);
+}
+
+void depositar(){
+    int numero;
+    float valor;
+
+    printf("\n- Depositar -\n");
+    for(int i = 0; i < 50; i++){
+        printf("-");
     }
-    else{
+
+    printf("\nDigite o número da conta a ser acrescentado o valor:\n");
+    scanf("%d", &numero);
+
+    if(numero <= 0 || numero>totalContas){
+        printf("\nConta não encontrada!\n");
+        return;
+    }
+
+    printf("\nDigite o valor a ser acrescentado: R$\n");
+    scanf("%f", &valor);
+
+   saldo[numero - 1] += valor;
+
+   printf("\nDeposito feito com sucesso!\n");
+   printf("O seu saldo atual é de: R$%.2f", saldo[numero - 1]);
+
+    }
+
+    void sacar(){
+        int numero;
+        float valor;
+
+        printf("\n- Sacar -\n");
+        for(int i = 0; i < 50; i++){
+        printf("-");
+    }
+
+        printf("\nDigite o numero da conta a ser sacado o valor:");
+        scanf("%d", &numero);
+
+        if(numero <= 0 || numero>totalContas){
+        printf("\nConta não encontrada!\n");
+        return;
+    }
+
+       printf("\nDigite o valor a ser sacado: R$\n");
+       scanf("%f", &valor);
+
+      if(valor > saldo[numero - 1]){
+        printf("\nSaldo Insuficiente seu liso!\n");
+        return;
+      }
+
+      saldo[numero - 1] -= valor;
+
+       printf("\nSaque feito com sucesso!\n");
+       printf("O seu saldo atual é de: %.2f\n", saldo[numero - 1]);
+
+    }
+
+    void transferir(){
+
+        int numero, numero2;
+        float valor;
+
+        printf("\n- Transferir Valor -\n");
+        for(int i = 0; i < 50; i++){
+        printf("-");
+        }
+
+        printf("\nInsira o numero da conta a ser retirado o valor:\n");
+        scanf("%d", &numero);
+
+        if(numero <= 0 || numero>totalContas){
+        printf("\nConta não encontrada!\n");
+        return;
+        }
+        
+        printf("\nInsira o numero da conta que vai receber o valor:\n");
+        scanf("%d", &numero2);
+
+        if(numero <= 0 || numero > totalContas){
+            printf("\nConta não encontrada!\n");
+            return;
+        } else if(numero2 == numero){
+            printf("\nNao é possivel transferir para a mesma conta!\n");
+            return;
+        }
+
+        printf("\nInsira o valor a ser tranferido: \n");
+        scanf("%f", &valor);
+
+        if(valor > saldo[numero - 1]){
+        printf("\nSaldo Insuficiente seu liso!\n");
+        return;
+      }
+
         time_t tempo;
         time(&tempo);
-        quant = quant - trans;
-        printf("** Transferencia Concluida **\n");
-        printf("Saldo Restante: %d\n", quant);
+
+        saldo[numero - 1] -= valor;
+        saldo[numero2 -1] += valor;
+
+        printf("\nTransferência realizada com sucesso!\n");
+        printf("Saldo Restante: %.2f\n", saldo[numero - 1]);
         printf("Data/Hora da Transferencia: %s\n", ctime(&tempo));
     }
-}
+    void VisuConta(){
 
-void vizuConta()
-{
-    printf("- Visualizar Conta -\n");
-    for(int i = 0; i < 50; i++){
+        int numero;
+
+        printf("\n- Visualizar Conta -\n");
+        for(int i = 0; i < 50; i++){
         printf("-");
+        }
+
+        printf("\nDigite o numero da conta a ser visualizada:\n");
+        scanf("%d", &numero);
+        
+        if(numero <= 0 || numero>totalContas){
+        printf("Conta não encontrada!\n");
+        return;
+        }
+
+        printf("\nO numero da conta e: %d\n", numeroConta[numero - 1]);
+        printf("O titular da conta e: %s\n", titular[numero - 1]);
+        printf("O saldo da conta e: R$%.2f\n", saldo[numero - 1]);
+
     }
-    printf("\nNome: %s", nome); 
-    printf("Conta: %d\n", NumConta);
-    printf("Saldo Total: %d\n", quant);
-    printf("Pressione qualquer tecla para continuar...\n");
-    getchar();  
-}
 
+    int main(){
+      int opcao;
 
-void depositar() {
-    printf("Função Depositar ainda não implementada.\n");
-}
+      do{
+        printf("\n--- Simulador de Gerenciamento de Contas Bancárias ---\n");
+        printf("\n1. Criar nova conta\n");
+        printf("2. Depositar\n");
+        printf("3. Sacar\n");
+        printf("4. Transferir\n");
+        printf("5. Visualizar Conta\n");
+        printf("6. Sair\n");
+        printf("\nEscolha uma opção: ");
+        scanf("%d", &opcao);
 
-void sacar() {
-    printf("Função Sacar ainda não implementada.\n");
-}
-
-void detalhesTrans() {
-    printf("Função Detalhes da Transação ainda não implementada.\n");
-}
-
-void maisDetalhes() {
-    printf("Função Mais Detalhes ainda não implementada.\n");
-}
+        switch (opcao)
+        {
+        case 1:
+            criarConta();
+            break;
+        case 2:
+            depositar();
+            break;
+        case 3:
+            sacar();
+            break;
+        case 4:
+            transferir();
+            break;
+        case 5:
+            VisuConta();
+            break;
+        case 6:
+                printf("Saindo do programa...\n");
+                break;
+        default:
+            printf("Opção inválida!\n");
+        }
+        } while (opcao != 6);
+        
+        
+        return 0;
+      }
+    
