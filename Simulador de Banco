@@ -1,100 +1,121 @@
-/******************************************************************************
-
-                            Online C Compiler.
-                Code, Compile, Run and Debug C program online.
-Write your code in this editor and press "Run" button to compile and execute it.
-
-*******************************************************************************/
-
 #include <stdio.h>
-#include <stdlib.h> //exit(0),system()
-#include <conio.h>  //getch()
-    char nome[20];
-    int depos, quant = 10000, NumConta, trans,cont; //globais
-    
-    void menu();
-    
+#include <stdlib.h> // exit(0)
+#include <time.h>   // time(), ctime()
+
+
+char nome[20];
+int quant = 10000, NumConta, trans;
+
+
+void menu();
+void depositar();
+void sacar();
+void transferir();
+void vizuConta();
+void detalhesTrans();
+void maisDetalhes();
+
 int main()
-{   int esc;
-    printf("Insira seu nome completo: ");
-    fgets(nome);
+{
+    int esc;
+    printf("Insira seu nome completo:\n ");
+    fgets(nome, sizeof(nome), stdin);
     
-    printf("Insira o numero da conta");
+    printf("Insira o numero da conta:\n ");
     scanf("%d", &NumConta);
     
     menu();
-    printf("Insira sua escolha : ");
+    printf("Insira sua escolha: \n");
     scanf("%d", &esc);
     
-    switch (case esc)
+    switch (esc)
     {
-    case 1:    
-        depositar();
-        break;
-    case 2:    
-        sacar();
-        break;
-     case 3:    
-        transferir();
-        break;
-     case 4:    
-        vizuConta();
-        break;
-     case 5:    
-        detalhesTrans();
-        break;
-     case 6:    
-        maisDetalhes();
-        exit(0);
+        case 1:
+            depositar();
+            break;
+        case 2:
+            sacar();
+            break;
+        case 3:
+            transferir();
+            break;
+        case 4:
+            vizuConta();
+            break;
+        case 5:
+            detalhesTrans();
+            break;
+        case 6:
+            maisDetalhes();
+            exit(0);
+            break;
+        default:
+            printf("Escolha invalida.\n");
+            break;
     }
     
     return 0;
 }
- void menu()
-    {
-        printf("---MENU PRINCIPAL---\n");
-        printf("1.Depositar");
-        printf("2.Sacar");
-        printf("3.Transferir");
-        printf("4.Vizualizar Conta");
-        printf("5.Detalhes da Transação");
-        printf("6.Sair");
+
+void menu()
+{
+    printf("---MENU PRINCIPAL---\n");
+    printf("1. Depositar\n");
+    printf("2. Sacar\n");
+    printf("3. Transferir\n");
+    printf("4. Visualizar Conta\n");
+    printf("5. Detalhes da Transação\n");
+    printf("6. Sair\n");
+}
+
+void transferir()
+{
+    printf("- Transferir Valor -\n");
+    for(int i = 0; i < 50; i++){
+        printf("-");
     }
+    printf("\nInsira o valor a ser transferido: ");
+    scanf("%d", &trans);
     
-    void transferir()
-    {
-        int cont;
-        FILE *ptr=fopen("Account.txt","a");
-        printf("-TRANSFERIR DINHEIRO-\n");
-        printf("Insira valor a ser tranferido : ");
-        scanf("%d", &trans);
-         printf("Insira o numero da conta a ser transferido o valor : ");
-        scanf("%d", &cont);
-        
-        if(cont<trans)
-        {
-            printf("Saldo Insuficiente seu Liso\n");
-        }
-        else{
-            cont -= trans;
-            printf("Transferencia Completa!\n");
-            printf("Saldo atual: %d", cont);
-            fprintf(ptr, "O valor %d foi transferido de sua conta para %d \n", trans, cont);
-        }
-        fclose(ptr);
-        printf("Pressione qualquer tecla para continuar..........\n");
-        getch();
+    if (quant < trans){
+        printf("** Saldo Insuficiente **\n");
     }
-    
-    void vizuConta()
-    {
-        printf("-Vizualizar Conta-");
-        for(int i =0; i<50; i++){
-            printf("-");
-        }
-        printf("\nNome: %s\n", nome);
-        printf("\nConta: %d\n", NumConta);
-         printf("\nSaldo Total: %d\n", cont);
-          printf("\nPressione qualquer tecla.....\n");
-          getch();
+    else{
+        time_t tempo;
+        time(&tempo);
+        quant = quant - trans;
+        printf("** Transferencia Concluida **\n");
+        printf("Saldo Restante: %d\n", quant);
+        printf("Data/Hora da Transferencia: %s\n", ctime(&tempo));
     }
+}
+
+void vizuConta()
+{
+    printf("- Visualizar Conta -\n");
+    for(int i = 0; i < 50; i++){
+        printf("-");
+    }
+    printf("\nNome: %s", nome); 
+    printf("Conta: %d\n", NumConta);
+    printf("Saldo Total: %d\n", quant);
+    printf("Pressione qualquer tecla para continuar...\n");
+    getchar();  
+}
+
+
+void depositar() {
+    printf("Função Depositar ainda não implementada.\n");
+}
+
+void sacar() {
+    printf("Função Sacar ainda não implementada.\n");
+}
+
+void detalhesTrans() {
+    printf("Função Detalhes da Transação ainda não implementada.\n");
+}
+
+void maisDetalhes() {
+    printf("Função Mais Detalhes ainda não implementada.\n");
+}
