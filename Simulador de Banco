@@ -218,7 +218,7 @@ void depositar(){
         default:
             printf("Opção inválida!\n");
         }
-        } while (opcao != 6);
+        } while (opcao != 8);
         
         
         return 0;
