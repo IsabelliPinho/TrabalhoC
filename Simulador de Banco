@@ -12,6 +12,8 @@ char cpf[MAX_CONTAS][12];     //cpf é char pq se não ele não pega os 0
 float saldo[MAX_CONTAS];
 int totalContas = 0;
 
+//!--------------------------------------------------------------------------
+
 void criarConta(){
 
     if(totalContas >= MAX_CONTAS){
@@ -36,7 +38,9 @@ void criarConta(){
     printf("\nConta criada com sucesso! O numero da sua conta é: %d e seu saldo atual é de: R$%.2f\n", numeroConta[totalContas - 1], saldo[totalContas - 1]);
 }
 
-void depositar(){
+//!--------------------------------------------------------------------------
+
+    void depositar(){
     int numero;
     float valor;
 
@@ -63,7 +67,10 @@ void depositar(){
 
     }
 
-    void sacar(){
+//!--------------------------------------------------------------------------
+
+
+          void sacar(){
         int numero;
         float valor;
 
@@ -95,7 +102,10 @@ void depositar(){
 
     }
 
-    void transferir(){
+//!--------------------------------------------------------------------------
+
+
+        void transferir(){
 
         int numero, numero2;
         float valor;
@@ -142,7 +152,11 @@ void depositar(){
         printf("Saldo Restante: %.2f\n", saldo[numero - 1]);
         printf("Data/Hora da Transferencia: %s\n", ctime(&tempo));
     }
-    void VisuConta(){
+    
+    //!--------------------------------------------------------------------------
+
+    
+         void VisuConta(){
 
         int numero;
 
@@ -165,9 +179,17 @@ void depositar(){
         printf("O saldo da conta é: R$%.2f\n", saldo[numero - 1]);
 
     }
-    void AtualizarDados(){
+    
+    //!--------------------------------------------------------------------------
 
+    
+    void AtualizarDados(){
+        
     }
+    
+    //!--------------------------------------------------------------------------
+
+    
     void fecharConta(){
 
     }
