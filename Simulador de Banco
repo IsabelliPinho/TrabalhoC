@@ -8,6 +8,7 @@
 
 int numeroConta[MAX_CONTAS];
 char titular[MAX_CONTAS][50];
+char cpf[MAX_CONTAS][12];     //cpf é char pq se não ele não pega os 0
 float saldo[MAX_CONTAS];
 int totalContas = 0;
 
@@ -26,6 +27,8 @@ void criarConta(){
 
     printf("\nDigite o nome do titular da conta:\n");
     scanf(" %[^\n]%*c", titular[totalContas]);
+    printf("\nDigite o CPF do titular da conta (apenas números):\n");
+    scanf(" %[^\n]%*c", cpf[totalContas]);
 
     saldo[totalContas] = 0.0;
     totalContas ++;
@@ -156,11 +159,19 @@ void depositar(){
         return;
         }
 
-        printf("\nO numero da conta e: %d\n", numeroConta[numero - 1]);
-        printf("O titular da conta e: %s\n", titular[numero - 1]);
-        printf("O saldo da conta e: R$%.2f\n", saldo[numero - 1]);
+        printf("\nO numero da conta é: %d\n", numeroConta[numero - 1]);
+        printf("O titular da conta é: %s\n", titular[numero - 1]);
+        printf("O CPF do titular da conta é: %s\n", cpf[numero - 1]);
+        printf("O saldo da conta é: R$%.2f\n", saldo[numero - 1]);
 
     }
+    void AtualizarDados(){
+
+    }
+    void fecharConta(){
+
+    }
+
 
     int main(){
       int opcao;
@@ -172,7 +183,9 @@ void depositar(){
         printf("3. Sacar\n");
         printf("4. Transferir\n");
         printf("5. Visualizar Conta\n");
-        printf("6. Sair\n");
+        printf("6. Atualizar dados do titular(nome ou CPF)\n");
+        printf("7. Fechar conta bancária\n");
+        printf("8. Sair\n");
         printf("\nEscolha uma opção: ");
         scanf("%d", &opcao);
 
@@ -194,6 +207,12 @@ void depositar(){
             VisuConta();
             break;
         case 6:
+            AtualizarDados();
+            break;
+        case 7:
+            fecharConta();
+            break;
+        case 8:
                 printf("Saindo do programa...\n");
                 break;
         default:
