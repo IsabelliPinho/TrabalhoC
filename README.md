@@ -21,7 +21,9 @@ Um projeto desenvolvido na disciplina de Fundamentos de Programação do Curso C
 - `VizuConta()`: nessa função o usuário é capaz de ver todos os dados da conta (titular, CPF, número da conta e saldo) desde que insira o número da conta a qual deseja ver;
 - `AtualizarDados()`: tal função permite ao usuário atualizar dados como nome do titular e CPF;
 - `fecharConta()`: essa função permite excluir uma conta que foi criada;
-
+- `validarCPF()`: essa função permite que apenas números de até 11 dígitos sejam inseridos;
+-  `gerarSaldoAleatorio()`: essa função permite que na etapa de criação da conta seja gerado um saldo aleatório;
+-  `exibirMenu()`: essa função reduz a repetição desnecessária de código;
 <h3> ➥ Desafios enfrentados: </h3> 
 
 - Algumas dificuldades foram em relação ao uso de vetores para armazenar as informações de cada conta, pois eles eram utilizados diversas vezes em cada função.
