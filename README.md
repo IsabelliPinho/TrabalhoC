@@ -22,7 +22,8 @@ Um projeto desenvolvido na disciplina de Fundamentos de Programação do Curso C
 - `AtualizarDados()`: tal função permite ao usuário atualizar dados como nome do titular e CPF;
 - `fecharConta()`: essa função permite excluir uma conta que foi criada;
 - `validarCPF()`: essa função permite que apenas números de até 11 dígitos sejam inseridos;
--  `exibirMenu()`: essa função reduz a repetição desnecessária de código;
+- `gerarSaldoAleatorio()`: tem a função de gerar um saldo aleatório na conta do titular ao criar a conta (feita com intuito de ajudar nos testes do código);
+-  `exibirMenu()`: essa função reduz a repetição desnecessária de código.
 
 <h3> ➥ Desafios enfrentados: </h3> 
 
