@@ -22,8 +22,8 @@ Um projeto desenvolvido na disciplina de Fundamentos de Programação do Curso C
 - `AtualizarDados()`: tal função permite ao usuário atualizar dados como nome do titular e CPF;
 - `fecharConta()`: essa função permite excluir uma conta que foi criada;
 - `validarCPF()`: essa função permite que apenas números de até 11 dígitos sejam inseridos;
--  `gerarSaldoAleatorio()`: essa função permite que na etapa de criação da conta seja gerado um saldo aleatório;
 -  `exibirMenu()`: essa função reduz a repetição desnecessária de código;
+
 <h3> ➥ Desafios enfrentados: </h3> 
 
 - Algumas dificuldades foram em relação ao uso de vetores para armazenar as informações de cada conta, pois eles eram utilizados diversas vezes em cada função.
@@ -33,9 +33,9 @@ Um projeto desenvolvido na disciplina de Fundamentos de Programação do Curso C
 
 Todas ajudaram no código bruto, depois dividimos as funções do simulador para cada:
 
-- `Leticia Almeida`: responsável pela criação das funções criarConta(),  depositar() e sacar(). Além disso ficou responsável pela descrição das suas funções criadas.
-- `Isabelli Pinho`: responsável pela criação das funções transferir(),exibirMenu(), validarCPF(), gerarSaldoAleatorio() , VisuConta() e historicoTrans(). Além disso ficou responsável pela descrição das suas funções criadas.
-- `Elislandia Horlanda`: responsável pela criação das funções AtualizarDados() e fecharConta(). Além disso ficou responsável pela criação 'bruta' do relatório e da descrição das suas funções criadas.
+- `Leticia Almeida`: responsável pela criação das funções criarConta(),  depositar(), sacar() e testes e implementação no código geral. Além disso ficou responsável pela descrição das suas funções criadas.
+- `Isabelli Pinho`: responsável pela criação das funções transferir(),exibirMenu(), validarCPF() e VisuConta(). Além disso ficou responsável pela descrição das suas funções criadas.
+- `Elislandia Horlanda`: responsável pela criação das funções AtualizarDados() e fecharConta(). Além disso ficou responsável pela criação 'bruta' e principal do relatório e da descrição das suas funções criadas.
 
 
  <img width=100% src="https://capsule-render.vercel.app/api?type=waving&color=720FFA&height=120&section=footer"/>
