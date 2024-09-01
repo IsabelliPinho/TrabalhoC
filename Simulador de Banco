@@ -79,6 +79,11 @@ void depositar()
         return;
     }
 
+    if (numeroConta[numero - 1] == -1) {
+    printf("\nEsta conta foi fechada e não está disponível para operações.\n");
+    return;
+}
+
     printf("\nDigite o valor a ser depositado: R$\n");
     scanf("%f", &valor);
 
@@ -109,6 +114,11 @@ void sacar()
         printf("\nConta não encontrada!\n");
         return;
     }
+
+    if (numeroConta[numero - 1] == -1) {
+    printf("\nEsta conta foi fechada e não está disponível para operações.\n");
+    return;
+}
 
     printf("\nDigite o valor a ser sacado: R$\n");
     scanf("%f", &valor);
@@ -147,6 +157,11 @@ void transferir()
         return;
     }
 
+    if (numeroConta[numero - 1] == -1) {
+    printf("\nEsta conta foi fechada e não está disponível para operações.\n");
+    return;
+}
+
     printf("\nDigite o número da conta de destino:\n");
     scanf("%d", &numero2);
 
@@ -155,10 +170,15 @@ void transferir()
         printf("\nConta não encontrada!\n");
         return;
     }
-    else if (numero2 == numero)
+    if (numero2 == numero)
     {
         printf("\nNão é possível transferir para a mesma conta!\n");
         return;
+    }
+    
+    if (numeroConta[numero2 - 1] == -1) {
+    printf("\nEsta conta foi fechada e não está disponível para operações.\n");
+    return;
     }
 
     printf("\nDigite o valor a ser transferido: R$\n");
@@ -202,6 +222,11 @@ void VisuConta()
         return;
     }
 
+    if (numeroConta[numero - 1] == -1) {
+    printf("\nEsta conta foi fechada e não está disponível para operações.\n");
+    return;
+}
+
     printf("\nNúmero da conta: %d\n", numeroConta[numero - 1]);
     printf("Titular da conta: %s\n", titular[numero - 1]);
     printf("CPF do titular: %s\n", cpf[numero - 1]);
@@ -243,6 +268,11 @@ void AtualizarDados() {
         return;
     }
 
+    if (numeroConta[numero - 1] == -1) {
+    printf("\nEsta conta foi fechada e não está disponível para operações.\n");
+    return;
+}
+
     printf("\nO que você deseja atualizar?\n");
     printf("1. Nome do titular\n");
     printf("2. CPF do titular\n");
@@ -269,6 +299,42 @@ void AtualizarDados() {
 
 void fecharConta()
 {
+     int numero;
+
+    printf("\n- Fechar Conta Bancária -\n");
+    for (int i = 0; i < 50; i++) {
+        printf("-");
+    }
+
+    printf("\nDigite o número da conta que deseja fechar:\n");
+    scanf("%d", &numero);
+
+    if (numero <= 0 || numero > totalContas) {
+        printf("\nConta não encontrada!\n");
+        return;
+    }
+
+    if (numeroConta[numero - 1] == -1) {
+    printf("\nEsta conta já foi fechada e não está disponível para operações.\n");
+    return;
+}
+
+   if(saldo[numero - 1] == 0.0){
+
+    // Confirma
+    printf("\nTem certeza que deseja fechar a conta %d (%s)? (1 para Sim / 0 para Não): ", numeroConta[numero - 1], titular[numero - 1]);
+    int confirmar;
+    scanf("%d", &confirmar);
+
+    if (confirmar == 1) {
+        numeroConta[numero - 1] = -1; // Definir como -1 para indicar que a conta está fechada, pois apagar a conta e decrementar o total faria com que o numero das outras contas fosse alterado.
+        printf("\nConta fechada com sucesso!\n");
+    } else {
+        printf("\nOperação de fechamento cancelada.\n");
+    }
+   } else{
+    printf("Antes de fecha-lá, saque ou transfira o saldo da conta.\n");
+   }
 }
 
 //!--------------------------------------------------------------------------
