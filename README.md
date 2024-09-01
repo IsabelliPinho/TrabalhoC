@@ -33,9 +33,9 @@ Um projeto desenvolvido na disciplina de Fundamentos de Programação do Curso C
 
 Todas ajudaram no código bruto, depois dividimos as funções do simulador para cada:
 
-- `Leticia Almeida`: responsável pela criação das funções criarConta(),  depositar(), sacar() e testes e implementação no código geral. Além disso ficou responsável pela descrição das suas funções criadas.
-- `Isabelli Pinho`: responsável pela criação das funções transferir(),exibirMenu(), validarCPF() e VisuConta(). Além disso ficou responsável pela descrição das suas funções criadas.
-- `Elislandia Horlanda`: responsável pela criação das funções AtualizarDados() e fecharConta(). Além disso ficou responsável pela criação 'bruta' e principal do relatório e da descrição das suas funções criadas.
+- `Leticia Almeida`: responsável pela criação das funções criarConta(),  depositar(), sacar() e testes e implementações no código geral. Além disso ficou responsável pela descrição das suas funções criadas.
+- `Isabelli Pinho`: responsável pela criação das funções transferir(), exibirMenu(), validarCPF() e VisuConta(). Além disso ficou responsável pela descrição das suas funções criadas.
+- `Elislandia Horlanda`: responsável pela criação das funções AtualizarDados() (esta acompanha as funções atuCPF() e atuTitular()) e fecharConta(). Além disso ficou responsável pela criação principal do relatório e da descrição das suas funções criadas.
 
 
  <img width=100% src="https://capsule-render.vercel.app/api?type=waving&color=720FFA&height=120&section=footer"/>
