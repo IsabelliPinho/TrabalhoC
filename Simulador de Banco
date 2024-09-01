@@ -7,31 +7,30 @@
 
 int numeroConta[MAX_CONTAS];
 char titular[MAX_CONTAS][50];
-char cpf[MAX_CONTAS][12];     //cpf é char pq se não ele não pega os 0
+char cpf[MAX_CONTAS][12]; // cpf é char pq se não ele não pega os 0
 float saldo[MAX_CONTAS];
 int totalContas = 0;
 
 //  pra validar CPF
-int validarCPF(const char *cpf) {
+int validarCPF(const char *cpf)
+{
     return strlen(cpf) == 11 && strspn(cpf, "0123456789") == 11;
-}
-
-//  pra gerar saldo aleatório
-float gerarSaldoAleatorio() {
-    return (float)(rand() % 1000000) / 100;  // Gera saldo aleatório na criação da conta
 }
 
 //!--------------------------------------------------------------------------
 
-void criarConta() {
-    if (totalContas >= MAX_CONTAS) {
+void criarConta()
+{
+    if (totalContas >= MAX_CONTAS)
+    {
         printf("\nLimite de contas criadas alcançado!\n");
         return;
     }
     numeroConta[totalContas] = totalContas + 1;
 
     printf("\n- Criar Conta -\n");
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < 50; i++)
+    {
         printf("-");
     }
 
@@ -39,19 +38,20 @@ void criarConta() {
     scanf(" %[^\n]%*c", titular[totalContas]);
 
     char cpfTemp[12];
-    do {
+    do
+    {
         printf("\nDigite o CPF do titular da conta (11 dígitos, apenas números):\n");
         scanf(" %[^\n]%*c", cpfTemp);
 
-        if (!validarCPF(cpfTemp)) {
+        if (!validarCPF(cpfTemp))
+        {
             printf("CPF inválido! Deve ter exatamente 11 dígitos e conter apenas números.\n");
         }
     } while (!validarCPF(cpfTemp));
 
     strcpy(cpf[totalContas], cpfTemp);
 
-    // Gerar saldo aleatório
-    saldo[totalContas] = gerarSaldoAleatorio();
+    saldo[totalContas] = 0.0;
     totalContas++;
 
     printf("\nConta criada com sucesso! O número da sua conta é: %d e seu saldo atual é de: R$%.2f\n", numeroConta[totalContas - 1], saldo[totalContas - 1]);
@@ -59,19 +59,22 @@ void criarConta() {
 
 //!--------------------------------------------------------------------------
 
-void depositar() {
+void depositar()
+{
     int numero;
     float valor;
 
     printf("\n- Depositar -\n");
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < 50; i++)
+    {
         printf("-");
     }
 
     printf("\nDigite o número da conta para depósito:\n");
     scanf("%d", &numero);
 
-    if (numero <= 0 || numero > totalContas) {
+    if (numero <= 0 || numero > totalContas)
+    {
         printf("\nConta não encontrada!\n");
         return;
     }
@@ -87,19 +90,22 @@ void depositar() {
 
 //!--------------------------------------------------------------------------
 
-void sacar() {
+void sacar()
+{
     int numero;
     float valor;
 
     printf("\n- Sacar -\n");
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < 50; i++)
+    {
         printf("-");
     }
 
     printf("\nDigite o número da conta para saque:\n");
     scanf("%d", &numero);
 
-    if (numero <= 0 || numero > totalContas) {
+    if (numero <= 0 || numero > totalContas)
+    {
         printf("\nConta não encontrada!\n");
         return;
     }
@@ -107,7 +113,8 @@ void sacar() {
     printf("\nDigite o valor a ser sacado: R$\n");
     scanf("%f", &valor);
 
-    if (valor > saldo[numero - 1]) {
+    if (valor > saldo[numero - 1])
+    {
         printf("\nSaldo insuficiente!\n");
         return;
     }
@@ -120,19 +127,22 @@ void sacar() {
 
 //!--------------------------------------------------------------------------
 
-void transferir() {
+void transferir()
+{
     int numero, numero2;
     float valor;
 
     printf("\n- Transferir Valor -\n");
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < 50; i++)
+    {
         printf("-");
     }
 
     printf("\nDigite o número da conta de origem:\n");
     scanf("%d", &numero);
 
-    if (numero <= 0 || numero > totalContas) {
+    if (numero <= 0 || numero > totalContas)
+    {
         printf("\nConta não encontrada!\n");
         return;
     }
@@ -140,10 +150,13 @@ void transferir() {
     printf("\nDigite o número da conta de destino:\n");
     scanf("%d", &numero2);
 
-    if (numero2 <= 0 || numero2 > totalContas) {
+    if (numero2 <= 0 || numero2 > totalContas)
+    {
         printf("\nConta não encontrada!\n");
         return;
-    } else if (numero2 == numero) {
+    }
+    else if (numero2 == numero)
+    {
         printf("\nNão é possível transferir para a mesma conta!\n");
         return;
     }
@@ -151,7 +164,8 @@ void transferir() {
     printf("\nDigite o valor a ser transferido: R$\n");
     scanf("%f", &valor);
 
-    if (valor > saldo[numero - 1]) {
+    if (valor > saldo[numero - 1])
+    {
         printf("\nSaldo insuficiente!\n");
         return;
     }
@@ -169,18 +183,21 @@ void transferir() {
 
 //!--------------------------------------------------------------------------
 
-void VisuConta() {
+void VisuConta()
+{
     int numero;
 
     printf("\n- Visualizar Conta -\n");
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < 50; i++)
+    {
         printf("-");
     }
 
     printf("\nDigite o número da conta a ser visualizada:\n");
     scanf("%d", &numero);
 
-    if (numero <= 0 || numero > totalContas) {
+    if (numero <= 0 || numero > totalContas)
+    {
         printf("Conta não encontrada!\n");
         return;
     }
@@ -194,17 +211,70 @@ void VisuConta() {
 //!--------------------------------------------------------------------------
 
 void AtualizarDados() {
-  
+    int numero;
+    int opcao;
+    char novoTitular[50];
+    char novoCpf[12];
+
+    void atuTitular(){
+        printf("\nDigite o novo nome do titular:\n");
+        scanf(" %[^\n]%*c", novoTitular);
+        strcpy(titular[numero - 1], novoTitular); // Atualiza o nome do titular
+        printf("\nNome atualizado com sucesso! O novo nome do titular é: %s\n", novoTitular);
+    }
+
+    void atuCPF(){
+        printf("\nDigite o novo CPF do titular (apenas números):\n");
+        scanf(" %[^\n]%*c", novoCpf);
+        strcpy(cpf[numero - 1], novoCpf); // Atualiza o CPF do titular
+        printf("\nCPF atualizado com sucesso! O novo CPF do titular é: %s\n", novoCpf);
+    }
+
+    printf("\n- Atualizar Dados do Titular -\n");
+    for (int i = 0; i < 50; i++) {
+        printf("-");
+    }
+
+    printf("\nDigite o número da conta que deseja atualizar:\n");
+    scanf("%d", &numero);
+
+    if (numero <= 0 || numero > totalContas) {
+        printf("\nConta não encontrada!\n");
+        return;
+    }
+
+    printf("\nO que você deseja atualizar?\n");
+    printf("1. Nome do titular\n");
+    printf("2. CPF do titular\n");
+    printf("3. Nome e CPF\n");
+    printf("Escolha uma opção: ");
+    scanf("%d", &opcao);
+
+    switch (opcao) {
+        case 1:
+            atuTitular();
+            break;
+        case 2:
+            atuCPF();
+            break;
+        case 3:
+            atuTitular();
+            atuCPF();
+            break;
+        default:
+            printf("Opção inválida!\n");
+    }
 }
 //!--------------------------------------------------------------------------
 
-void fecharConta() {
-    
+void fecharConta()
+{
 }
 
 //!--------------------------------------------------------------------------
 
-void exibirMenu() {
+void exibirMenu()
+{
     printf("\n--- Simulador de Gerenciamento de Contas Bancárias ---\n");
     printf("\n1. Criar nova conta\n");
     printf("2. Depositar\n");
@@ -219,48 +289,50 @@ void exibirMenu() {
 
 //!--------------------------------------------------------------------------
 
-int main() {
+int main()
+{
     int opcao;
 
-    
-    srand(time(NULL)); // pro saldo aleatorio
-
-    do {
+    do
+    {
         exibirMenu();
 
-        if (scanf("%d", &opcao) != 1) {
+        if (scanf("%d", &opcao) != 1)
+        {
             printf("\nEntrada invalida! Tente novamente.\n");
-            while (getchar() != '\n');
+            while (getchar() != '\n')
+                ;
             continue;
         }
 
-        switch (opcao) {
-            case 1:
-                criarConta();
-                break;
-            case 2:
-                depositar();
-                break;
-            case 3:
-                sacar();
-                break;
-            case 4:
-                transferir();
-                break;
-            case 5:
-                VisuConta();
-                break;
-            case 6:
-                AtualizarDados();
-                break;
-            case 7:
-                fecharConta();
-                break;
-            case 8:
-                printf("Saindo do programa...\n");
-                break;
-            default:
-                printf("Opção inválida! Tente novamente.\n");
+        switch (opcao)
+        {
+        case 1:
+            criarConta();
+            break;
+        case 2:
+            depositar();
+            break;
+        case 3:
+            sacar();
+            break;
+        case 4:
+            transferir();
+            break;
+        case 5:
+            VisuConta();
+            break;
+        case 6:
+            AtualizarDados();
+            break;
+        case 7:
+            fecharConta();
+            break;
+        case 8:
+            printf("Saindo do programa...\n");
+            break;
+        default:
+            printf("Opção inválida! Tente novamente.\n");
         }
 
     } while (opcao != 8);
