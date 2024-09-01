@@ -14,7 +14,7 @@ Um projeto desenvolvido na disciplina de Fundamentos de Programação do Curso C
  
  <h3> ➥ Funções: </h3>
  
-- `criarConta()`: cria uma nova conta pro usuário no simulador, sendo solicitado o nome e CPF do titular, o qual irá receber o número da sua conta e um saldo inicial zerado;
+- `criarConta()`: cria uma nova conta pro usuário no simulador, sendo solicitado o nome e CPF do titular, o qual irá receber o número da sua conta e um saldo aleatório(para testes);
 - `depositar()`: nessa função o usuário é capaz de depositar qualquer valor na conta que ele desejar, desde que ele insira o número da conta a ser depositado o valor;
 - `sacar()`: tal função permite ao usuário sacar um valor (desde que exista o valor na conta) da conta em que ele digitar o número;
 - `tranferir()`: essa permite transferir valores de uma conta para a outra, sendo solicitado apenas o número da conta de origem e o da de destino;
