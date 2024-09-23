@@ -416,13 +416,14 @@ void exibirMenu()
     printf("\n--- Simulador de Gerenciamento de Contas Bancárias ---\n");
     printf("\n1. Criar nova conta\n");
     printf("2. Depositar\n");
+     printf("3. Sacar \n");
     printf("4. Transferir\n");
     printf("5. Visualizar Conta\n");
     printf("6. Atualizar dados do titular (nome ou CPF)\n");
     printf("7. Fechar conta bancária\n");
     printf("8. Visualizar Arquivo de Contas\n");
     printf("9. Excluir Arquivo de Contas\n");
-    printf("10. Sair\n");
+    printf("10.[Sair]\n");
     printf("\nEscolha uma opção: ");
 }
 
@@ -476,7 +477,7 @@ int main()
         case 9:
             excluirArquivoContas();
             break;
-        case 10: { 
+        case 10: 
             int escolha;
             
             printf("Você deseja salvar as contras criadas em um arquivo para a sua próxima utilização? Caso tenha excluido algum arquivo também é necessário salvar. (1 para Sim / 0 para Não)");
@@ -491,7 +492,7 @@ int main()
                  printf("Saindo do programa sem salvar...\n");
             }
             
-            break; }
+            break;
         default:
             printf("Opção inválida! Tente novamente.\n");
         }
