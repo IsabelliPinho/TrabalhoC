@@ -4,11 +4,18 @@
 #include <time.h>
 
 #define MAX_CONTAS 100
+#define ARQUIVO_CONTAS "contas_bancarias.txt"
 
-int numeroConta[MAX_CONTAS];
-char titular[MAX_CONTAS][50];
-char cpf[MAX_CONTAS][12]; // cpf é char pq se não ele não pega os 0
-float saldo[MAX_CONTAS];
+struct ContaBancaria{
+int numeroConta;
+char titular[50];
+char cpf[12]; // cpf é char pq se não ele não pega os 0
+float saldo;
+int ativa;
+};
+
+struct ContaBancaria contas[MAX_CONTAS];
+
 int totalContas = 0;
 
 //  pra validar CPF
@@ -26,7 +33,11 @@ void criarConta()
         printf("\nLimite de contas criadas alcançado!\n");
         return;
     }
-    numeroConta[totalContas] = totalContas + 1;
+
+    struct ContaBancaria *novaConta = &contas[totalContas];
+    novaConta -> numeroConta = totalContas + 1;
+    novaConta -> saldo = 0.0;
+    novaConta -> ativa = 1;
 
     printf("\n- Criar Conta -\n");
     for (int i = 0; i < 50; i++)
@@ -35,7 +46,7 @@ void criarConta()
     }
 
     printf("\nDigite o nome do titular da conta:\n");
-    scanf(" %[^\n]%*c", titular[totalContas]);
+    scanf(" %[^\n]%*c", novaConta -> titular);
 
     char cpfTemp[12];
     do
@@ -49,12 +60,11 @@ void criarConta()
         }
     } while (!validarCPF(cpfTemp));
 
-    strcpy(cpf[totalContas], cpfTemp);
+    strcpy(novaConta->cpf, cpfTemp);
 
-    saldo[totalContas] = 0.0;
     totalContas++;
 
-    printf("\nConta criada com sucesso! O número da sua conta é: %d e seu saldo atual é de: R$%.2f\n", numeroConta[totalContas - 1], saldo[totalContas - 1]);
+    printf("\nConta criada com sucesso! O número da sua conta é: %d e seu saldo atual é de: R$%.2f\n", novaConta->numeroConta, novaConta->saldo);
 }
 
 //!--------------------------------------------------------------------------
@@ -73,24 +83,19 @@ void depositar()
     printf("\nDigite o número da conta para depósito:\n");
     scanf("%d", &numero);
 
-    if (numero <= 0 || numero > totalContas)
+    if (numero <= 0 || numero > totalContas || contas[numero - 1].ativa == -1)
     {
-        printf("\nConta não encontrada!\n");
+        printf("\nConta não encontrada ou foi fechada e não está disponível para operações!\n");
         return;
     }
-
-    if (numeroConta[numero - 1] == -1) {
-    printf("\nEsta conta foi fechada e não está disponível para operações.\n");
-    return;
-}
 
     printf("\nDigite o valor a ser depositado: R$\n");
     scanf("%f", &valor);
 
-    saldo[numero - 1] += valor;
+    contas[numero - 1].saldo += valor;
 
     printf("\nDepósito feito com sucesso!\n");
-    printf("O seu saldo atual é de: R$%.2f\n", saldo[numero - 1]);
+    printf("O seu saldo atual é de: R$%.2f\n", contas[numero -1].saldo);
 }
 
 //!--------------------------------------------------------------------------
@@ -109,30 +114,26 @@ void sacar()
     printf("\nDigite o número da conta para saque:\n");
     scanf("%d", &numero);
 
-    if (numero <= 0 || numero > totalContas)
+    if (numero <= 0 || numero > totalContas || contas[numero - 1].ativa == -1)
     {
-        printf("\nConta não encontrada!\n");
+        printf("\nConta não encontrada ou foi fechada e não está disponível para operações!\n");
         return;
     }
 
-    if (numeroConta[numero - 1] == -1) {
-    printf("\nEsta conta foi fechada e não está disponível para operações.\n");
-    return;
-}
 
     printf("\nDigite o valor a ser sacado: R$\n");
     scanf("%f", &valor);
 
-    if (valor > saldo[numero - 1])
+    if (valor > contas[numero - 1].saldo)
     {
         printf("\nSaldo insuficiente!\n");
         return;
     }
 
-    saldo[numero - 1] -= valor;
+    contas[numero - 1].saldo -= valor;
 
     printf("\nSaque feito com sucesso!\n");
-    printf("O seu saldo atual é de: R$%.2f\n", saldo[numero - 1]);
+    printf("O seu saldo atual é de: R$%.2f\n", contas[numero - 1].saldo);
 }
 
 //!--------------------------------------------------------------------------
@@ -151,53 +152,38 @@ void transferir()
     printf("\nDigite o número da conta de origem:\n");
     scanf("%d", &numero);
 
-    if (numero <= 0 || numero > totalContas)
+    if (numero <= 0 || numero > totalContas || contas[numero - 1].ativa == -1)
     {
-        printf("\nConta não encontrada!\n");
+        printf("\nConta não encontrada ou foi fechada e não está disponível para operações!\n");
         return;
     }
-
-    if (numeroConta[numero - 1] == -1) {
-    printf("\nEsta conta foi fechada e não está disponível para operações.\n");
-    return;
-}
 
     printf("\nDigite o número da conta de destino:\n");
     scanf("%d", &numero2);
 
-    if (numero2 <= 0 || numero2 > totalContas)
+    if (numero2 <= 0 || numero2 > totalContas || numero2 == numero || contas[numero2 - 1].ativa == -1)
     {
-        printf("\nConta não encontrada!\n");
+        printf("\nConta não encontrada ou inválida!\n");
         return;
     }
-    if (numero2 == numero)
-    {
-        printf("\nNão é possível transferir para a mesma conta!\n");
-        return;
-    }
-    
-    if (numeroConta[numero2 - 1] == -1) {
-    printf("\nEsta conta foi fechada e não está disponível para operações.\n");
-    return;
-    }
-
+   
     printf("\nDigite o valor a ser transferido: R$\n");
     scanf("%f", &valor);
 
-    if (valor > saldo[numero - 1])
+    if (valor > contas[numero - 1].saldo)
     {
         printf("\nSaldo insuficiente!\n");
         return;
     }
 
-    time_t tempo;
+    contas[numero - 1].saldo -= valor;
+    contas[numero2 - 1].saldo += valor;
+
+     time_t tempo;
     time(&tempo);
 
-    saldo[numero - 1] -= valor;
-    saldo[numero2 - 1] += valor;
-
     printf("\nTransferência realizada com sucesso!\n");
-    printf("Saldo restante da conta de origem: R$%.2f\n", saldo[numero - 1]);
+    printf("Saldo restante da conta de origem: R$%.2f\n",  contas[numero - 1].saldo);
     printf("Data/Hora da Transferência: %s\n", ctime(&tempo));
 }
 
@@ -216,21 +202,15 @@ void VisuConta()
     printf("\nDigite o número da conta a ser visualizada:\n");
     scanf("%d", &numero);
 
-    if (numero <= 0 || numero > totalContas)
-    {
-        printf("Conta não encontrada!\n");
+    if (numero <= 0 || numero > totalContas || contas[numero - 1].ativa == -1) {
+        printf("\nConta não encontrada ou está fechada!\n");
         return;
     }
 
-    if (numeroConta[numero - 1] == -1) {
-    printf("\nEsta conta foi fechada e não está disponível para operações.\n");
-    return;
-}
-
-    printf("\nNúmero da conta: %d\n", numeroConta[numero - 1]);
-    printf("Titular da conta: %s\n", titular[numero - 1]);
-    printf("CPF do titular: %s\n", cpf[numero - 1]);
-    printf("Saldo da conta: R$%.2f\n", saldo[numero - 1]);
+    printf("\nNúmero da conta: %d\n", contas[numero - 1].numeroConta);
+    printf("Titular da conta: %s\n", contas[numero - 1].titular);
+    printf("CPF do titular: %s\n", contas[numero - 1].cpf);
+    printf("Saldo da conta: R$%.2f\n", contas[numero - 1].saldo);
 }
 
 //!--------------------------------------------------------------------------
@@ -244,15 +224,24 @@ void AtualizarDados() {
     void atuTitular(){
         printf("\nDigite o novo nome do titular:\n");
         scanf(" %[^\n]%*c", novoTitular);
-        strcpy(titular[numero - 1], novoTitular); // Atualiza o nome do titular
+        strcpy(contas[numero - 1].titular, novoTitular); // Atualiza o nome do titular
         printf("\nNome atualizado com sucesso! O novo nome do titular é: %s\n", novoTitular);
     }
 
     void atuCPF(){
-        printf("\nDigite o novo CPF do titular (apenas números):\n");
-        scanf(" %[^\n]%*c", novoCpf);
-        strcpy(cpf[numero - 1], novoCpf); // Atualiza o CPF do titular
-        printf("\nCPF atualizado com sucesso! O novo CPF do titular é: %s\n", novoCpf);
+       do {
+                printf("Digite o novo CPF do titular (11 dígitos, apenas números):\n");
+                scanf(" %[^\n]%*c", novoCpf);
+
+                // Valida o CPF inserido
+                if (!validarCPF(novoCpf)) {
+                    printf("CPF inválido! Deve ter exatamente 11 dígitos e conter apenas números.\n");
+                }
+            } while (!validarCPF(novoCpf));
+
+            // Atualiza o CPF na conta
+            strcpy(contas[numero - 1].cpf, novoCpf);
+            printf("CPF do titular atualizado com sucesso!\n");
     }
 
     printf("\n- Atualizar Dados do Titular -\n");
@@ -263,15 +252,10 @@ void AtualizarDados() {
     printf("\nDigite o número da conta que deseja atualizar:\n");
     scanf("%d", &numero);
 
-    if (numero <= 0 || numero > totalContas) {
-        printf("\nConta não encontrada!\n");
+ if (numero <= 0 || numero > totalContas || contas[numero - 1].ativa == -1) {
+        printf("\nConta não encontrada ou está fechada!\n");
         return;
     }
-
-    if (numeroConta[numero - 1] == -1) {
-    printf("\nEsta conta foi fechada e não está disponível para operações.\n");
-    return;
-}
 
     printf("\nO que você deseja atualizar?\n");
     printf("1. Nome do titular\n");
@@ -309,25 +293,20 @@ void fecharConta()
     printf("\nDigite o número da conta que deseja fechar:\n");
     scanf("%d", &numero);
 
-    if (numero <= 0 || numero > totalContas) {
-        printf("\nConta não encontrada!\n");
+     if (numero <= 0 || numero > totalContas || contas[numero - 1].ativa == -1) {
+        printf("\nConta não encontrada ou já está fechada!\n");
         return;
     }
 
-    if (numeroConta[numero - 1] == -1) {
-    printf("\nEsta conta já foi fechada e não está disponível para operações.\n");
-    return;
-}
-
-   if(saldo[numero - 1] == 0.0){
+   if(contas[numero - 1].saldo == 0.0){
 
     // Confirma
-    printf("\nTem certeza que deseja fechar a conta %d (%s)? (1 para Sim / 0 para Não): ", numeroConta[numero - 1], titular[numero - 1]);
+    printf("\nTem certeza que deseja fechar a conta %d (%s)? (1 para Sim / 0 para Não): ", contas[numero - 1].numeroConta, contas[numero - 1].titular);
     int confirmar;
     scanf("%d", &confirmar);
 
     if (confirmar == 1) {
-        numeroConta[numero - 1] = -1; // Definir como -1 para indicar que a conta está fechada, pois apagar a conta e decrementar o total faria com que o numero das outras contas fosse alterado.
+      contas[numero - 1].ativa = -1; // Definir como -1 para indicar que a conta está fechada, pois apagar a conta e decrementar o total faria com que o numero das outras contas fosse alterado.
         printf("\nConta fechada com sucesso!\n");
     } else {
         printf("\nOperação de fechamento cancelada.\n");
@@ -339,24 +318,121 @@ void fecharConta()
 
 //!--------------------------------------------------------------------------
 
+void salvarContasEmArquivo() {
+    FILE *arquivo = fopen(ARQUIVO_CONTAS, "w");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo para salvar as contas.\n");
+        return;
+    }
+    
+    for (int i = 0; i < totalContas; i++) {
+        fprintf(arquivo, "%d %s %s %.2f %d\n", 
+            contas[i].numeroConta, 
+            contas[i].titular, 
+            contas[i].cpf, 
+            contas[i].saldo, 
+            contas[i].ativa);
+    }
+    
+    fclose(arquivo);
+    printf("\nContas salvas com sucesso no arquivo.\n");
+}
+
+//!--------------------------------------------------------------------------
+
+void carregarContasDeArquivo() {
+    FILE *arquivo = fopen(ARQUIVO_CONTAS, "r");
+    if (arquivo == NULL) {
+        printf("Nenhum arquivo de contas encontrado. Iniciando com base vazia.\n");
+        return;
+    }
+    
+    totalContas = 0;
+    while (fscanf(arquivo, "%d %49s %11s %f %d", 
+                  &contas[totalContas].numeroConta, 
+                  contas[totalContas].titular, 
+                  contas[totalContas].cpf, 
+                  &contas[totalContas].saldo, 
+                  &contas[totalContas].ativa) != EOF) {
+        totalContas++;
+    }
+
+    fclose(arquivo);
+    printf("\nContas carregadas do arquivo com sucesso.\n");
+}
+
+//!--------------------------------------------------------------------------
+
+void visualizarArquivoContas() {
+    FILE *arquivo = fopen(ARQUIVO_CONTAS, "r");
+    if (arquivo == NULL) {
+        printf("Nenhum arquivo de contas encontrado.\n");
+        return;
+    }
+
+    printf("\n--- Visualização do Arquivo de Contas ---\n");
+
+    int numeroConta, ativa;
+    char titular[50], cpf[12];
+    float saldo;
+
+    // Leitura e exibição das contas do arquivo
+    while (fscanf(arquivo, "%d %49s %11s %f %d", 
+                  &numeroConta, titular, cpf, &saldo, &ativa) != EOF) {
+        printf("Número da Conta: %d\n", numeroConta);
+        printf("Titular: %s\n", titular);
+        printf("CPF: %s\n", cpf);
+        printf("Saldo: R$%.2f\n", saldo);
+        printf("Ativa: %s\n", ativa == 1 ? "Sim" : "Não");
+        printf("---------------------------------\n");
+    }
+
+    fclose(arquivo);
+}
+
+//!--------------------------------------------------------------------------
+
+void excluirArquivoContas() {
+    int confirmar;
+    printf("\nTem certeza que deseja excluir o arquivo de contas? Isso apagará permanentemente todos os dados. (1 para Sim / 0 para Não): ");
+    scanf("%d", &confirmar);
+
+    if (confirmar == 1) {
+        if (remove(ARQUIVO_CONTAS) == 0) {
+            printf("\nArquivo de contas excluído com sucesso. Agora você pode começar do zero.\n");
+            totalContas = 0; // Reinicializando tudo
+        } else {
+            printf("\nErro ao excluir o arquivo de contas. Talvez o arquivo não exista.\n");
+        }
+    } else {
+        printf("\nExclusão cancelada.\n");
+    }
+}
+
+//!--------------------------------------------------------------------------
+
 void exibirMenu()
 {
     printf("\n--- Simulador de Gerenciamento de Contas Bancárias ---\n");
     printf("\n1. Criar nova conta\n");
     printf("2. Depositar\n");
-    printf("3. Sacar\n");
     printf("4. Transferir\n");
     printf("5. Visualizar Conta\n");
     printf("6. Atualizar dados do titular (nome ou CPF)\n");
     printf("7. Fechar conta bancária\n");
-    printf("8. Sair\n");
+    printf("8. Visualizar Arquivo de Contas\n");
+    printf("9. Excluir Arquivo de Contas\n");
+    printf("10. Sair\n");
     printf("\nEscolha uma opção: ");
 }
 
 //!--------------------------------------------------------------------------
 
+
+
 int main()
 {
+    carregarContasDeArquivo();
     int opcao;
 
     do
@@ -395,13 +471,32 @@ int main()
             fecharConta();
             break;
         case 8:
-            printf("Saindo do programa...\n");
+            visualizarArquivoContas();
+            break;
+        case 9:
+            excluirArquivoContas();
+            break;
+        case 10: 
+            int escolha;
+            
+            printf("Você deseja salvar as contras criadas em um arquivo para a sua próxima utilização? Caso tenha excluido algum arquivo também é necessário salvar. (1 para Sim / 0 para Não)");
+            scanf("%d", &escolha);
+            
+            if(escolha == 1){
+                
+            salvarContasEmArquivo();
+            printf("Salvo com sucesso, saindo do programa...\n");
+            
+            } else{
+                 printf("Saindo do programa sem salvar...\n");
+            }
+            
             break;
         default:
             printf("Opção inválida! Tente novamente.\n");
         }
 
-    } while (opcao != 8);
+    } while (opcao != 10);
 
     return 0;
-}
+}                                                          
