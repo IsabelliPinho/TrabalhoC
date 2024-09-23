@@ -476,7 +476,7 @@ int main()
         case 9:
             excluirArquivoContas();
             break;
-        case 10: 
+        case 10: { 
             int escolha;
             
             printf("Você deseja salvar as contras criadas em um arquivo para a sua próxima utilização? Caso tenha excluido algum arquivo também é necessário salvar. (1 para Sim / 0 para Não)");
@@ -491,7 +491,7 @@ int main()
                  printf("Saindo do programa sem salvar...\n");
             }
             
-            break;
+            break; }
         default:
             printf("Opção inválida! Tente novamente.\n");
         }
